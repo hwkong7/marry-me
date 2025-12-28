@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Marry Me</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: radial-gradient(circle at top, #2b0033, #120016);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* 🌸 꽃 전체 */
+        .flower {
+            position: relative;
+            width: 320px;
+            height: 320px;
+        }
+
+        /* 🌸 꽃잎 */
+        .petal {
+            position: absolute;
+            width: 80px;
+            height: 160px;
+            top: 50%;
+            left: 50%;
+
+            /* ⭐ 핵심: 회전 기준 */
+            transform-origin: 50% 100%;
+
+            cursor: pointer;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+            z-index: 2;
+        }
+
+        /* 🌸 클릭된 꽃잎 */
+        .petal.open {
+            transform:
+                translate(-50%, -50%) rotate(20deg) translateX(120px);
+            opacity: 0;
+        }
+
+        /* 🌼 꽃 중심 */
+        .center {
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            background: radial-gradient(circle, #fff3b0, #ffcc33);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+
+            /* 살짝 아래 */
+            transform: translate(-50%, -45%);
+
+            z-index: 3;
+            box-shadow: 0 0 18px rgba(255, 230, 120, 0.9);
+        }
+
+        /* 💍 반지 */
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 48px;
+            opacity: 0;
+            transition: all 0.8s ease;
+            z-index: 1;
+        }
+
+        .ring.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="flower" id="flower">
+
+        <!-- 💍 반지 -->
+        <div class="ring" id="ring">💍</div>
+
+        <!-- 🌼 꽃 중심 -->
+        <div class="center"></div>
+
+    </div>
+
+    <script>
+        const flower = document.getElementById("flower");
+        const ring = document.getElementById("ring");
+
+        const petalCount = 12;
+        const radius = 70;
+        const petalSrc = "속성 1=Base.svg"; // 네 SVG 파일명
+
+        for (let i = 0; i < petalCount; i++) {
+            const angle = (360 / petalCount) * i;
+
+            const petal = document.createElement("img");
+            petal.src = petalSrc;
+            petal.className = "petal";
+
+            // 🌸 올바른 배치 공식
+            petal.style.transform = `
+      translate(-50%, -50%)
+      rotate(${angle}deg)
+      translateY(-${radius}px)
+    `;
+
+            // 🌸 클릭 시 연출
+            petal.addEventListener("click", () => {
+                petal.classList.add("open");
+                ring.classList.add("show");
+            });
+
+            flower.appendChild(petal);
+        }
+    </script>
+
+</body>
+
+</html>
