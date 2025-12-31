@@ -9,11 +9,18 @@
         body {
             margin: 0;
             height: 100vh;
-            background: radial-gradient(circle at top, #2b0033, #120016);
+
+            /* 💖 러블리 배경 */
+            background:
+                radial-gradient(circle at top, #ffdde1, #ee9ca7),
+                radial-gradient(circle at bottom, #d8b4fe, #a855f7);
+            background-blend-mode: screen;
+
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
         }
 
         /* 🌸 꽃 전체 */
@@ -76,7 +83,7 @@
             opacity: 0;
         }
 
-        /* 💍 반지 (처음부터 존재) */
+        /* 💍 반지 */
         .ring {
             position: absolute;
             top: 20%;
@@ -85,12 +92,11 @@
             height: 200px;
             transform: translate(-50%, -50%);
             z-index: 1;
-            /* center 뒤 */
-            filter: drop-shadow(0 0 14px rgba(255, 240, 180, 0.9));
+            filter: drop-shadow(0 0 18px rgba(255, 200, 220, 0.9));
             pointer-events: none;
         }
 
-        /* 🌼 꽃 중심 (뚜껑 역할) */
+        /* 🌼 꽃 중심 */
         .center {
             position: absolute;
             width: 48px;
@@ -101,16 +107,35 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 3;
-            /* 반지 위 */
             box-shadow: 0 0 22px rgba(255, 230, 120, 0.9);
             cursor: pointer;
             transition: transform 0.8s ease, opacity 0.8s ease;
         }
 
-        /* 🌼 중앙 사라짐 → 뒤에 반지 드러남 */
         .center.open {
             transform: translate(-50%, -50%) scale(0);
             opacity: 0;
+        }
+
+        /* 💌 메시지 */
+        .message {
+            position: absolute;
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, 10px);
+            font-size: 26px;
+            font-weight: 600;
+            color: #7a004f;
+            opacity: 0;
+            transition: opacity 1.2s ease, transform 1.2s ease;
+            z-index: 4;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .message.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
         }
     </style>
 </head>
@@ -124,21 +149,26 @@
         <div class="leaf left"></div>
         <div class="leaf right"></div>
 
-        <!-- 💍 반지 : 처음부터 있음 -->
+        <!-- 💍 반지 -->
         <img src="Ring.svg" class="ring" alt="ring" />
 
         <!-- 🌼 꽃 중심 -->
         <div class="center" id="center"></div>
 
+        <!-- 💌 메시지 -->
+        <div class="message" id="message">
+            재현아, 나와 결혼해줄래? 💖
+        </div>
+
     </div>
 
     <script>
         const center = document.getElementById("center");
+        const message = document.getElementById("message");
 
         const petalCount = 12;
         const radius = 20;
         const petalSrc = "속성 1=Base.svg";
-
         const flower = document.getElementById("flower");
 
         for (let i = 0; i < petalCount; i++) {
@@ -161,9 +191,13 @@
             flower.appendChild(petal);
         }
 
-        // 🌼 중앙 클릭 → 뚜껑 제거
+        // 🌼 중앙 클릭 → 반지 드러남 → 메시지 등장
         center.addEventListener("click", () => {
             center.classList.add("open");
+
+            setTimeout(() => {
+                message.classList.add("show");
+            }, 600); // 반지 인식 후 메시지
         });
     </script>
 
